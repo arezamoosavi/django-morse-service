@@ -108,3 +108,52 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# Logging
+
+LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'formatters': {
+            'request_format': {
+                'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d (%(message)s) '
+                          '%(remote_addr)s %(user_id)s "%(request_method)s '
+                          '%(path_info)s %(server_protocol)s" %(http_user_agent)s ',
+            },
+            'verbose': {
+                'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d (%(message)s) '
+            },
+        },
+        'handlers': {
+            'console_django': {
+                'class': 'logging.StreamHandler',
+                # 'filters': ['request'],
+                'formatter': 'verbose',
+            },
+            'console_project': {
+                'class': 'logging.StreamHandler',
+                # 'filters': ['request'],
+                'formatter': 'request_format',
+            },
+            'file': {
+                'class': 'logging.FileHandler',
+                'filename': BASE_DIR + '/' + 'debug.log'
+            },
+        },
+        'loggers': {
+            'django.server': {
+                'level': 'DEBUG',
+                'handlers': ['console_django'],
+
+            },
+            'django.request': {
+                'level': 'DEBUG',
+                'handlers': ['console_django'],
+            },
+            'apps': {
+                'level': 'DEBUG',
+                'handlers': ['file', 'console_django'],
+            }
+        },
+    }

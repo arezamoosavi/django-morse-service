@@ -2,7 +2,9 @@ from rest_framework import generics, status
 from .models import ReceiveSentence
 from rest_framework.response import Response
 from utils.morse_codes import get_morse_code
+import logging
 
+logger = logging.getLogger(__name__)
 
 class TranslatetoMorse(generics.GenericAPIView):
     
@@ -22,10 +24,12 @@ class TranslatetoMorse(generics.GenericAPIView):
                     try:
                         morse = get_morse_code(word = word)
                     except Exception as e:
+                        logger.info('morse code translate Error!')
                         return Response({"error": "Unsupport word. Only alphabet", "sentence": request.data['sentence']})
 
                 result.append(morse)
 
-            data = {"morse_code": ''.join(result)}    
+            data = {"morse_code": ''.join(result)}
+            logger.info('successfull Translation')    
             return Response(data = data,status=status.HTTP_200_OK)
         return Response({"error": "Please format", "format": {"sentence": "Hello"}, "data": request.data})

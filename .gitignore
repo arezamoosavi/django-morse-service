@@ -214,7 +214,8 @@ dmypy.json
 
 ### Python Patch ###
 .venv/
-
+.env
+.vscode
 ### Python.VirtualEnv Stack ###
 # Virtualenv
 # http://iamzed.com/2009/05/07/a-primer-on-virtualenv/
@@ -230,5 +231,3 @@ pip-selfcheck.json
 
 ### Celery ###
 *.pid
-
-/src/utils/twitter_api_key.py

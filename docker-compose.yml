@@ -5,16 +5,17 @@ volumes:
 
 services:
 
-  python: &python
+  app:
     build:
       context: .
     volumes:
       - ./src:/src
     ports:
       - 8000:8000
-    command: python manage.py runserver 0.0.0.0:8000
+    # command: sh ./run_web.sh
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     # command: gunicorn -w 4 morse.wsgi -b 0.0.0.0:8000
-    restart: always
+    restart: on-failure
     env_file:
       - ./.env.dev
     depends_on:
@@ -35,14 +36,19 @@ services:
 
   rabbitmq:
     image: "rabbitmq:3-management"
+    restart: on-failure
     ports:
       - "15672:15672"
       - "5672:5672"
 
   celery_worker:
-    <<: *python
-    command: celery -A morse worker --loglevel=info
-    ports: []
+    build:
+      context: .
+      dockerfile: Dockerfile
+      # command: celery worker -A src.morse.celery -Q default --loglevel=info
+    command: sh -c "wait-for rabbitmq:5672 && wait-for app:8000 -- celery -A config.celery worker -l info"
     depends_on:
       - rabbitmq
       - postgres
+    volumes:
+    - ./src:/src

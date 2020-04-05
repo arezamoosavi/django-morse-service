@@ -34,7 +34,7 @@ class TranslatetoMorse(generics.GenericAPIView):
             data = {"morse_code": ''.join(result)}
             logger.info('successfull Translation')    
             return Response(data = data,status=status.HTTP_200_OK)
-        logger.error():
+        logger.error("Error!")
         return Response({"error": "Please format", "format": {"sentence": "Hello"}, "data": request.data})
 
 
@@ -45,5 +45,5 @@ class QueueMesseges(generics.GenericAPIView):
         serializer = QueueSerializer(data=self.request.data)
         serializer.is_valid(raise_exception=True)
         queue_messege.delay(msg = serializer.data['messege'])
-        logger.log(" end of queue")
+        logger.info("end of queue")
         return Response(data ={"Task": "Done"} ,status=status.HTTP_200_OK)

@@ -8,4 +8,7 @@ urlpatterns = [
     path('morse',
             views.TranslatetoMorse.as_view(),
             name='translate'),
+    path('queue',
+            views.QueueMesseges.as_view(),
+            name='queue'),
 ]

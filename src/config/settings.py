@@ -109,6 +109,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Celery
+
+CELERY_BROKER_URL = "amqp://rabbitmq"
 
 # Logging
 

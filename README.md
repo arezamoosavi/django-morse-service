@@ -20,3 +20,10 @@ then run tests by
 ```bash
 python manage.py test
 ```
+
+## Run with a client
+A client side pythonic script is added.
+
+```bash
+python test_client.py
+```
